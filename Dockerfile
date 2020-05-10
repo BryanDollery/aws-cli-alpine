@@ -2,7 +2,7 @@ FROM alpine:3.11.6
 
 ENV GLIBC_VER=2.31-r0
 
-RUN apk add --no-cache openssl curl bash jq zip unzip git ca-certificates make docker docker-compose binutils && \
+RUN apk add --no-cache openssl vim curl bash jq zip unzip git ca-certificates make docker docker-compose binutils && \
     curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub && \
     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-${GLIBC_VER}.apk && \
     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-bin-${GLIBC_VER}.apk && \
@@ -17,6 +17,7 @@ RUN apk add --no-cache openssl curl bash jq zip unzip git ca-certificates make d
         /usr/local/aws-cli/v2/*/dist/awscli/examples \
         glibc-${GLIBC_VER}.apk \
         glibc-bin-${GLIBC_VER}.apk && \
+    apk upgrade --purge && \
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/usr/local/bin/aws"]
