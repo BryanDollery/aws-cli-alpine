@@ -1,8 +1,11 @@
 FROM alpine:3.11.6
 
-ENV GLIBC_VER=2.31-r0
+ARG TZ="Africa/Nairobi"
 
-RUN apk add --no-cache openssl openssh-client vim curl bash jq zip unzip git ca-certificates make docker docker-compose binutils && \
+ENV GLIBC_VER=2.31-r0
+run echo "Timezone is " $TZ
+
+RUN apk add --no-cache openssl openssh-client tzdata vim curl bash jq zip unzip git ca-certificates make docker docker-compose binutils && \
     curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub && \
     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-${GLIBC_VER}.apk && \
     curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-bin-${GLIBC_VER}.apk && \
@@ -17,6 +20,8 @@ RUN apk add --no-cache openssl openssh-client vim curl bash jq zip unzip git ca-
         /usr/local/aws-cli/v2/*/dist/awscli/examples \
         glibc-${GLIBC_VER}.apk \
         glibc-bin-${GLIBC_VER}.apk && \
+    cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone && \
     apk upgrade --purge && \
     rm -rf /var/cache/apk/*
 
