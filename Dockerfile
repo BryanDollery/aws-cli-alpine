@@ -8,6 +8,7 @@ run apk add --no-cache openssl \
                        openssh-client \
                        tzdata \
                        vim \
+                       less \
                        curl \
                        bash \
                        jq \
